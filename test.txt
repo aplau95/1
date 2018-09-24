@@ -1,0 +1,8 @@
+S: WERST 
+S: WERST B
+T: HAMER
+G: 4
+B: 54
+G: 4 H
+A: 3
+Q
