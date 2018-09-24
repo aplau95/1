@@ -31,9 +31,11 @@ public class SchoolSearch {
 		Scanner scanner = new Scanner(System.in);
 		while (true){
             System.out.print("Student Database Search - Enter Command > ");
-            String command = scanner.nextLine();
-            if (command.equals("Q") || command.equals("Quit")){
-                break;
+            if (scanner.hasNextLine()){
+                String command = scanner.nextLine();
+                if (command.equals("Q") || command.equals("Quit")){
+                    break;
+                }
             }
             processCommand(command);
             System.out.println();
@@ -161,13 +163,9 @@ public class SchoolSearch {
                return s1GPA.compareTo(s2GPA) * -1; //Reverses Sorting to Descending (Highest First)
             }
         });
-	    for (Student highest : results) {
-            System.out.println(highest.lastName + "," + highest.firstName + "," + highest.gpa + ","
-                    + highest.teacherLastName + "," + highest.teacherFirstName + "," + highest.bus);
-        }
 	    if (results.size() > 0) {
 	        Student highest = results.get(0);
-	        System.out.println(highest.lastName + "," + highest.firstName + "," + highest.gpa + ","
+	        System.out.println("Highest: " + highest.lastName + "," + highest.firstName + "," + highest.gpa + ","
                     + highest.teacherLastName + "," + highest.teacherFirstName + "," + highest.bus);
         }
     }
@@ -187,11 +185,7 @@ public class SchoolSearch {
                 return s1GPA.compareTo(s2GPA);
             }
         });
-        for (Student highest : results) {
-            System.out.println(highest.lastName + "," + highest.firstName + "," + highest.gpa + ","
-                    + highest.teacherLastName + "," + highest.teacherFirstName + "," + highest.bus);
-        }
-        if (results.size() > 0) {
+       if (results.size() > 0) {
             Student highest = results.get(0);
             System.out.println("Lowest: " + highest.lastName + "," + highest.firstName + "," + highest.gpa + ","
                     + highest.teacherLastName + "," + highest.teacherFirstName + "," + highest.bus);
