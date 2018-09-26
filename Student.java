@@ -1,3 +1,8 @@
+/* CSC 365-03
+   Lab1
+   Andrew Lau and Ryan Kirkpatrick
+*/
+
 public class Student {
 		
 	public String lastName;

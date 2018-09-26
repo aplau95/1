@@ -1,3 +1,8 @@
+/* CSC 365-03
+   Lab1
+   Andrew Lau and Ryan Kirkpatrick
+*/
+
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Collections;
