@@ -24,18 +24,17 @@ public class SchoolSearch {
 			}
 			System.out.println("Students in Database: " + students.size());
 		} catch (Exception e) {
-			System.out.println("Error: " + e.getMessage());
+            System.out.println("Error: " + e.getMessage());
+            System.exit(0);
 		}
 
 
 		Scanner scanner = new Scanner(System.in);
-		while (true){
+		while (true) {
             System.out.print("Student Database Search - Enter Command > ");
-            if (scanner.hasNextLine()){
-                String command = scanner.nextLine();
-                if (command.equals("Q") || command.equals("Quit")){
-                    break;
-                }
+            String command = scanner.nextLine();
+            if (command.equals("Q") || command.equals("Quit")){
+                break;
             }
             processCommand(command);
             System.out.println();

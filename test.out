@@ -1,0 +1,55 @@
+Students in Database: 60
+Student Database Search - Enter Command > WERST,LEON,6,111,NISTENDIRK,NANCY
+
+Student Database Search - Enter Command > WERST,LEON,55
+
+Student Database Search - Enter Command > LIBRANDI,TODD
+HAVIR,BOBBIE
+SARAO,DIEDRA
+VANCOTT,MIKE
+WICINSKY,TERESE
+KOZOLA,BUSTER
+MULLINGS,LEIGHANN
+BUSSMANN,BILLY
+BERBES,DICK
+MULGREW,RANDELL
+TOWLEY,LANE
+
+Student Database Search - Enter Command > CORKER,CARTER
+IMMERMAN,DEVIN
+RAPOSE,ALONZO
+WORBINGTON,DEEDRA
+OGAS,ERVIN
+SPANICEK,KENDRA
+GUICE,CODI
+GLOR,HUNG
+GUM,NOAH
+MASSART,ELDON
+NOVICK,ROLLAND
+DURAND,CARLEE
+BEX,TAMESHA
+DELUNA,KRYSTAL
+COMO,ZANDRA
+
+Student Database Search - Enter Command > OGAS,ERVIN,4,105
+GUICE,CODI,4,112
+BREVO,JANNETTE,6,111
+VANCOTT,MIKE,2,108
+GLOR,HUNG,4,112
+SAELEE,DANILO,1,103
+GUM,NOAH,4,112
+BERBES,DICK,2,108
+MULGREW,RANDELL,2,108
+NOVICK,ROLLAND,4,112
+THEUNISSEN,GRACE,3,110
+TOWLEY,LANE,2,108
+
+Student Database Search - Enter Command > Highest: CORKER,CARTER,3.12,HANTZ,JED,53
+
+Student Database Search - Enter Command > Grade: 3 - Average GPA: 3.0488887
+
+Student Database Search - Enter Command > Invalid Command
+
+Student Database Search - Enter Command > Invalid Command
+
+Student Database Search - Enter Command > 
