@@ -11,19 +11,14 @@ public class Student {
 	public int classroom;
 	public int bus;
 	public float gpa;
-	public String teacherLastName;
-	public String teacherFirstName;
 
-	public Student(String lastName, String firstName, int grade, int classroom, int bus, float gpa, String teacherLastName,
-		String teacherFirstName){
+	public Student(String lastName, String firstName, int grade, int classroom, int bus, float gpa){
 		this.lastName = lastName;
 		this.firstName = firstName;
 		this.grade = grade;
 		this.classroom = classroom;
 		this.bus = bus;
 		this.gpa = gpa;
-		this.teacherLastName = teacherLastName;
-		this.teacherFirstName = teacherFirstName;
 	}
 
 	public void printStudent() {

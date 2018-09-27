@@ -11,8 +11,10 @@ import java.util.Scanner;
 
 public class SchoolSearch {
 
-	private static final String STUDENTS = "students.txt";
-    private static ArrayList<Student> students = new ArrayList<>();
+    private static final String STUDENTS = "list.txt";
+    private static final String TEACHERS = "teachers.txt";
+    private static ArrayList<Student> studentsList = new ArrayList<>();
+    private static ArrayList<Student> teachersList = new ArrayList<>();
 	
 	public static void main(String[] args){
 
@@ -22,12 +24,19 @@ public class SchoolSearch {
 			sc = new Scanner(new File(STUDENTS));
 			while (sc.hasNextLine()){
 				String nextLine = sc.nextLine();
-				String data[] = nextLine.split(",");
-                Student newStudent = new Student(data[0], data[1], Integer.valueOf(data[2]), Integer.valueOf(data[3]),
-                        Integer.valueOf(data[4]), Float.valueOf(data[5]), data[6], data[7]);
-                students.add(newStudent);
-			}
-			System.out.println("Students in Database: " + students.size());
+				String studentLine[] = nextLine.split(",");
+                Student newStudent = new Student(data[0], data[1], Integer.valueOf(data[2]), Integer.valueOf(data[3]), Integer.valueOf(data[4]), Float.valueOf(data[5]));
+                studentsList.add(newStudent);
+            }
+            sc = new Scanner(new File(TEACHERS));
+            while (sc.hasNextLine()){
+				String nextLine = sc.nextLine();
+				String teacherLine[] = nextLine.split(",");
+                Student newTeacher = new Teacher(data[0], data[1], Integer.valueOf(data[2]));
+                teacherList.add(newTeacher);
+            }
+            System.out.println("Students in Database: " + studentsList.size());
+            System.out.println("Teachers in Database: " + teachersList.size());
 		} catch (Exception e) {
             System.out.println("Error: " + e.getMessage());
             System.exit(0);
@@ -72,8 +81,8 @@ public class SchoolSearch {
 
     private static void processInfo() {
 	    int gradePopulation[] = new int[7];
-	    for (Student stu : students) {
-	        switch (stu.grade) {
+	    for (Student student : students) {
+	        switch (student.grade) {
                 case 0:
                     gradePopulation[0]++;
                     break;
@@ -109,9 +118,9 @@ public class SchoolSearch {
 	        int grade = tkn.nextInt();
 	        int cnt = 0;
 	        float gpaTotal = 0f;
-	        for (Student stu : students) {
-	            if (stu.grade == grade) {
-	                gpaTotal = gpaTotal + stu.gpa;
+	        for (Student student : studentsList) {
+	            if (student.grade == grade) {
+	                gpaTotal = gpaTotal + student.gpa;
 	                cnt++;
                 }
             }
@@ -123,9 +132,9 @@ public class SchoolSearch {
     private static void processBus(Scanner tkn) {
 	    if(tkn.hasNext()){
 	        int route = tkn.nextInt();
-	        for (Student stu : students) {
-	            if (stu.bus == route) {
-	                System.out.println(stu.lastName + "," + stu.firstName + "," + stu.grade + "," + stu.classroom);
+	        for (Student student : studentsList) {
+	            if (student.bus == route) {
+	                System.out.println(student.lastName + "," + student.firstName + "," + student.grade + "," + student.classroom);
                 }
             }
         } else { System.out.println("Invalid Command: B[us]: <Number>"); }
@@ -143,9 +152,9 @@ public class SchoolSearch {
                } else { System.out.println("Invalid Command: G[rade]: <number> [[H[igh]] | [L[ow]]]"); }
 
             } else {
-                for (Student stu : students) {
-                    if (stu.grade == grade) {
-                        System.out.println(stu.lastName + "," + stu.firstName);
+                for (Student student : studentsList) {
+                    if (student.grade == grade) {
+                        System.out.println(student.lastName + "," + student.firstName);
                     }
                 }
             }
@@ -154,9 +163,9 @@ public class SchoolSearch {
 
     private static void findHighest(int grade) {
 	    ArrayList<Student> results = new ArrayList<>();
-	    for (Student stu : students) {
-	        if (stu.grade == grade) {
-	            results.add(stu);
+	    for (Student student : studentsList) {
+	        if (student.grade == grade) {
+	            results.add(student);
             }
         }
         Collections.sort(results, new Comparator<Student>() {
@@ -176,9 +185,9 @@ public class SchoolSearch {
 
     private static void findLowest(int grade) {
 	    ArrayList<Student> results = new ArrayList<>();
-	    for (Student stu : students) {
-	        if (stu.grade == grade) {
-	            results.add(stu);
+	    for (Student student : studentsList) {
+	        if (student.grade == grade) {
+	            results.add(student);
             }
         }
         Collections.sort(results, new Comparator<Student>() {
@@ -199,37 +208,49 @@ public class SchoolSearch {
     private static void processTeacher(Scanner tkn) {
 	    if (tkn.hasNext()){
 	        String lastName = tkn.next();
-	        for (Student stu : students) {
-	            if(stu.teacherLastName.equals(lastName)) {
-	                System.out.println(stu.lastName + "," + stu.firstName);
+	        for (Teacher tch : teachersList) {
+	            if(tch.lastName.equals(lastName)) {
+	                System.out.println(findStudentsInClassroom(classroom));
                 }
             }
         } else { System.out.println("Invalid Command: T[eacher]: <lastname>"); }
     }
 
+    private static String findTeachersInClassroom(int classroom) {
+        for (Teacher teacher: teachersList) {
+            if (teacher.classroom == classroom) {
+                System.out.println(teacher.lastName + "," + teacher.firstName);
+            }
+        }
+    }
+
+    private static String findStudentsInClassroom(int classroom) {
+        for (Student student: studentList) {
+            if (student.classroom == classroom) {
+                System.out.println(student.lastName + "," + student.firstName);
+            }
+        }
+    }
+
     private static void processStudent(Scanner tkn) {
 	    if (tkn.hasNext()){
-
 	        String lastName = tkn.next();
 	        if(tkn.hasNext()){
-
 	            String bus = tkn.next();
 	            if(bus.equals("B") || bus.equals("Bus")){
-                    for (Student stu : students){
-                        if (stu.lastName.equals(lastName)){
-                            System.out.println(stu.lastName + "," + stu.firstName + "," + stu.bus);
+                    for (Student student : studentsList){
+                        if (student.lastName.equals(lastName)){
+                            System.out.println(student.lastName + "," + student.firstName + "," + student.bus);
                         }
                     }
-
                 } else {
                     System.out.println("Invalid Command: S[tudent]: <lastname> [B[us]]");
                 }
-
             } else {
-	            for (Student stu : students){
-	                if (stu.lastName.equals(lastName)){
-	                    System.out.println(stu.lastName + "," + stu.firstName + "," + stu.grade + "," + stu.classroom +
-                                "," + stu.teacherLastName + "," + stu.teacherFirstName);
+	            for (Student student : studentsList){
+	                if (student.lastName.equals(lastName)){
+	                    System.out.println(student.lastName + "," + student.firstName + "," + student.grade + "," + student.classroom + ","); 
+                        System.out.print(findStudentsInClassroom(classroom));
                     }
                 }
 
