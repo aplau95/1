@@ -61,7 +61,7 @@ public class schoolsearch {
 	}
 
 
-    // Traceability: implements requirements R3
+    // Traceability: implements requirements NR4
     private static void processCommand(String userInput) {
 	    Scanner tkn = new Scanner(userInput);
 	    if (tkn.hasNext()){
@@ -74,6 +74,8 @@ public class schoolsearch {
                 processGrade(tkn);
             } else if (cmd.equals("GT:") || cmd.equals("GradeTeacher:")) {
                 processGradeTeacher(tkn);
+            } else if (cmd.equals("EN") || cmd.equals("Enrollment")) {
+                classroomEnrollment();
             } else if (cmd.equals("B:") || cmd.equals("Bus:")) {
 	            processBus(tkn);
             } else if (cmd.equals("A:") || cmd.equals("Average:")) {
@@ -145,6 +147,7 @@ public class schoolsearch {
         } else { System.out.println("Invalid Command: A[verage]: <number>"); }
     }
 
+    // Traceability: implements requirements NR3
     private static void processGradeTeacher(Scanner tkn) {
         if (tkn.hasNext()) {
             ArrayList<Integer> results = new ArrayList<>();
@@ -247,6 +250,7 @@ public class schoolsearch {
         }
     }
 
+    // Traceability: implements requirements NR5
     private static void analyze(Scanner tkn){
         if(tkn.hasNext()){
             switch(tkn.next()) {
@@ -269,6 +273,8 @@ public class schoolsearch {
         else { System.out.println("Invalid Command: Anaylze: <B,T,G>"); }
     }
 
+    // Traceability: implements requirements NR5
+    // Helper function to anaylze bus route and gpa
     private static void analyzeBus(){
         HashMap<Integer, Float> busHashGPA = new HashMap<Integer, Float>();
         HashMap<Integer, Integer> busHashFreq = new HashMap<Integer, Integer>();
@@ -288,6 +294,25 @@ public class schoolsearch {
         }
     }
 
+    // Traceability: implements requirements NR4
+    private static void classroomEnrollment(){
+        HashMap<Integer, Integer> classroomHashFreq = new HashMap<Integer, Integer>();
+        TreeSet<Integer> classroomList = new TreeSet<Integer>();
+        for(Student student: studentsList){
+            if(!classroomList.contains(student.classroom)){
+                classroomList.add(student.classroom);
+                classroomHashFreq.put(student.classroom, 1);
+            } else {
+                classroomHashFreq.put(student.classroom, classroomHashFreq.get(student.classroom) + 1);
+            }
+        }
+        for(Integer classroom: classroomList) {
+            System.out.println("Classroom " + classroom + " has " + classroomHashFreq.get(classroom) + " students");
+        }
+    }
+
+    // Traceability: implements requirements NR5
+    // Helper function to anaylze the relationship between grade and gpa
     private static void analyzeGrade(){
         HashMap<Integer, Float> gradeHashGPA = new HashMap<Integer, Float>();
         HashMap<Integer, Integer> gradeHashFreq = new HashMap<Integer, Integer>();
@@ -307,6 +332,8 @@ public class schoolsearch {
         }
     }
 
+    // Traceability: implements requirements NR5
+    // Helper function to anaylze the relationship between teacher and gpa
     private static void analyzeTeacher(){
         HashMap<String, Float> teacherHashGPA = new HashMap<String, Float>();
         HashMap<String, Integer> teacherHashFreq = new HashMap<String, Integer>();
@@ -319,6 +346,7 @@ public class schoolsearch {
         }
     }
 
+    // Second helper function to anaylze the relationship between grade and gpa
     private static void getStudentsGPA(Teacher teacher, HashMap<String, Integer> teacherHashFreq, HashMap<String, Float> teacherHashGPA, TreeSet<String> teacherList){
         for(Student student: studentsList){
             if(student.classroom == teacher.classroom){
@@ -332,7 +360,6 @@ public class schoolsearch {
                 }
             }
         }
-        
     }
 
     // Traceability: implements requirements R6
@@ -347,6 +374,7 @@ public class schoolsearch {
         } else { System.out.println("Invalid Command: T[eacher]: <lastname>"); }
     }
 
+    // Traceability: implements requirements NR2
     private static void findTeachersInClassroom(int classroom) {
         for (Teacher teacher: teachersList) {
             if (teacher.classroom == classroom) {
@@ -355,6 +383,7 @@ public class schoolsearch {
         }
     }
 
+    // Traceability: implements requirements NR1
     private static void findStudentsInClassroom(int classroom) {
         for (Student student: studentsList) {
             if (student.classroom == classroom) {
