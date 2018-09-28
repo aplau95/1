@@ -262,8 +262,11 @@ public class SchoolSearch {
                 case "Grade":
                     analyzeGrade();  
                     break;
+                default:
+                    System.out.println("Invalid Command: Anaylze: <B,T,G>");
             }
         }
+        else { System.out.println("Invalid Command: Anaylze: <B,T,G>"); }
     }
 
     private static void analyzeBus(){

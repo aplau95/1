@@ -5,6 +5,13 @@ G: 4
 B: 54
 G: 4 H
 A: 3
+CT: 102
+GT: 4
+CS: 103
+Analyze: B
+Analyze: T
+Analyze: G
 asdf
 asdf
+
 Q
