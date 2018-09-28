@@ -93,6 +93,7 @@ public class SchoolSearch {
         } else { invalidCommand(); }
     }
 
+    // Traceability: implements requirements R11
     private static void processInfo() {
 	    int gradePopulation[] = new int[7];
 	    for (Student student : studentsList) {
@@ -127,6 +128,7 @@ public class SchoolSearch {
             System.out.println("Grade " + i + " : " + gradePopulation[i]);
     }
 
+    // Traceability: implements requirements R10
     private static void processAverage(Scanner tkn) {
 	    if (tkn.hasNext()) {
 	        int grade = tkn.nextInt();
@@ -251,12 +253,15 @@ public class SchoolSearch {
                 case "B":
                 case "Bus":
                     analyzeBus();
+                    break;
                 case "T":
                 case "Teacher":
                     analyzeTeacher();  
+                    break;
                 case "G":
                 case "Grade":
                     analyzeGrade();  
+                    break;
             }
         }
     }
@@ -384,6 +389,7 @@ public class SchoolSearch {
         }
     }
 
+    // Traceability: implements requirements R12
     private static void invalidCommand() {
         System.out.println("Invalid Command");
     }
