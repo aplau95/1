@@ -72,13 +72,19 @@ public class SchoolSearch {
             } else if (cmd.equals("T:") || cmd.equals("Teacher:")) {
 	            processTeacher(tkn);
             } else if (cmd.equals("G:") || cmd.equals("Grade:")) {
-	            processGrade(tkn);
+                processGrade(tkn);
+            } else if (cmd.equals("GT:") || cmd.equals("GradeTeacher:")) {
+                processGradeTeacher(tkn.nextInt());
             } else if (cmd.equals("B:") || cmd.equals("Bus:")) {
 	            processBus(tkn);
             } else if (cmd.equals("A:") || cmd.equals("Average:")) {
 	            processAverage(tkn);
             } else if (cmd.equals("I") || cmd.equals("Info")) {
-	            processInfo();
+                processInfo();
+            } else if (cmd.equals("CT:") || cmd.equals("ClassroomTeacher:")) {
+                findTeachersInClassroom(tkn.nextInt());
+            } else if (cmd.equals("CS:") || cmd.equals("ClassroomStudent:")) {
+                findStudentsInClassroom(tkn.nextInt());
             }
             else {
                 System.out.println("Invalid Command");
@@ -136,6 +142,20 @@ public class SchoolSearch {
         } else { System.out.println("Invalid Command: A[verage]: <number>"); }
     }
 
+    private static void progressGradeTeacher(int grade){
+        ArrayList<Integer> results = new ArrayList<>();
+        for (Student student : studentsList) {
+	        if (student.grade == grade) {
+                if(!results.contains(student.classroom)){
+                    results.add(student.classroom);
+                }
+            }
+        }
+        for (Integer classroom: results) {
+            findTeachersInClassroom(classroom);
+        }
+    }
+
     private static void processBus(Scanner tkn) {
 	    if(tkn.hasNext()){
 	        int route = tkn.nextInt();
@@ -185,7 +205,7 @@ public class SchoolSearch {
         });
 	    if (results.size() > 0) {
 	        Student highest = results.get(0);
-	        System.out.println("Highest: " + highest.lastName + "," + highest.firstName + "," + highest.gpa + ",");
+	        System.out.print("Highest: " + highest.lastName + "," + highest.firstName + "," + highest.gpa + ", ");
             findTeachersInClassroom(highest.classroom);
             System.out.print("," + highest.bus);
         }
@@ -208,7 +228,7 @@ public class SchoolSearch {
         });
        if (results.size() > 0) {
             Student highest = results.get(0);
-            System.out.println("Lowest: " + highest.lastName + "," + highest.firstName + "," + highest.gpa + ",");
+            System.out.print("Lowest: " + highest.lastName + "," + highest.firstName + "," + highest.gpa + ", ");
             findTeachersInClassroom(highest.classroom);
             System.out.print("," + highest.bus);
         }
@@ -236,7 +256,7 @@ public class SchoolSearch {
     private static void findStudentsInClassroom(int classroom) {
         for (Student student: studentsList) {
             if (student.classroom == classroom) {
-                System.out.print(student.lastName + "," + student.firstName);
+                System.out.println(student.lastName + "," + student.firstName);
             }
         }
     }
@@ -258,8 +278,8 @@ public class SchoolSearch {
             } else {
 	            for (Student student : studentsList){
 	                if (student.lastName.equals(lastName)){
-	                    System.out.println(student.lastName + "," + student.firstName + "," + student.grade + "," + student.classroom + ","); 
-                        findStudentsInClassroom(student.classroom);
+                        System.out.print(student.lastName + "," + student.firstName + "," + student.grade + "," + student.classroom + ","); 
+                        findTeachersInClassroom(student.classroom);
                     }
                 }
 
