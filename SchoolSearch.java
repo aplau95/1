@@ -6,7 +6,7 @@
 import java.io.File;
 import java.util.*;
 
-public class SchoolSearch {
+public class schoolsearch {
 
     private static final String STUDENTS = "list.txt";
     private static final String TEACHERS = "teachers.txt";
