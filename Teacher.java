@@ -1,6 +1,9 @@
-import org.graalvm.compiler.core.common.FieldsScanner.CalcOffset;
+/* CSC 365-03
+   Lab1
+   Andrew Lau and Ryan Kirkpatrick
+*/
 
-public class Student {
+public class Teacher {
 		
 	public String lastName;
 	public String firstName;

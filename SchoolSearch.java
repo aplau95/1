@@ -14,33 +14,40 @@ public class SchoolSearch {
     private static final String STUDENTS = "list.txt";
     private static final String TEACHERS = "teachers.txt";
     private static ArrayList<Student> studentsList = new ArrayList<>();
-    private static ArrayList<Student> teachersList = new ArrayList<>();
+    private static ArrayList<Teacher> teachersList = new ArrayList<>();
 	
 	public static void main(String[] args){
 
-		Scanner sc;
+        Scanner sc;
+        Scanner sc2;
 		
 		try {
 			sc = new Scanner(new File(STUDENTS));
 			while (sc.hasNextLine()){
 				String nextLine = sc.nextLine();
-				String studentLine[] = nextLine.split(",");
+				String data[] = nextLine.split(",");
                 Student newStudent = new Student(data[0], data[1], Integer.valueOf(data[2]), Integer.valueOf(data[3]), Integer.valueOf(data[4]), Float.valueOf(data[5]));
                 studentsList.add(newStudent);
             }
-            sc = new Scanner(new File(TEACHERS));
-            while (sc.hasNextLine()){
-				String nextLine = sc.nextLine();
-				String teacherLine[] = nextLine.split(",");
-                Student newTeacher = new Teacher(data[0], data[1], Integer.valueOf(data[2]));
-                teacherList.add(newTeacher);
-            }
             System.out.println("Students in Database: " + studentsList.size());
-            System.out.println("Teachers in Database: " + teachersList.size());
 		} catch (Exception e) {
             System.out.println("Error: " + e.getMessage());
             System.exit(0);
-		}
+        }
+        
+        try {
+            sc2 = new Scanner(new File(TEACHERS));
+            while (sc2.hasNextLine()){
+				String nextLine = sc2.nextLine();
+				String data[] = nextLine.split(",");
+                Teacher newTeacher = new Teacher(data[0], data[1], Integer.parseInt(data[2].trim()));
+                teachersList.add(newTeacher);
+            }
+            System.out.println("Teachers in Database: " + teachersList.size());
+        } catch (Exception e) {
+            System.out.println("Error: " + e.getMessage());
+            System.exit(0);
+        }
 
 
 		Scanner scanner = new Scanner(System.in);
@@ -81,7 +88,7 @@ public class SchoolSearch {
 
     private static void processInfo() {
 	    int gradePopulation[] = new int[7];
-	    for (Student student : students) {
+	    for (Student student : studentsList) {
 	        switch (student.grade) {
                 case 0:
                     gradePopulation[0]++;
@@ -178,8 +185,9 @@ public class SchoolSearch {
         });
 	    if (results.size() > 0) {
 	        Student highest = results.get(0);
-	        System.out.println("Highest: " + highest.lastName + "," + highest.firstName + "," + highest.gpa + ","
-                    + highest.teacherLastName + "," + highest.teacherFirstName + "," + highest.bus);
+	        System.out.println("Highest: " + highest.lastName + "," + highest.firstName + "," + highest.gpa + ",");
+            findTeachersInClassroom(highest.classroom);
+            System.out.print("," + highest.bus);
         }
     }
 
@@ -200,8 +208,9 @@ public class SchoolSearch {
         });
        if (results.size() > 0) {
             Student highest = results.get(0);
-            System.out.println("Lowest: " + highest.lastName + "," + highest.firstName + "," + highest.gpa + ","
-                    + highest.teacherLastName + "," + highest.teacherFirstName + "," + highest.bus);
+            System.out.println("Lowest: " + highest.lastName + "," + highest.firstName + "," + highest.gpa + ",");
+            findTeachersInClassroom(highest.classroom);
+            System.out.print("," + highest.bus);
         }
     }
 
@@ -210,24 +219,24 @@ public class SchoolSearch {
 	        String lastName = tkn.next();
 	        for (Teacher tch : teachersList) {
 	            if(tch.lastName.equals(lastName)) {
-	                System.out.println(findStudentsInClassroom(classroom));
+	                findStudentsInClassroom(tch.classroom);
                 }
             }
         } else { System.out.println("Invalid Command: T[eacher]: <lastname>"); }
     }
 
-    private static String findTeachersInClassroom(int classroom) {
+    private static void findTeachersInClassroom(int classroom) {
         for (Teacher teacher: teachersList) {
             if (teacher.classroom == classroom) {
-                System.out.println(teacher.lastName + "," + teacher.firstName);
+                System.out.print(teacher.lastName + "," + teacher.firstName);
             }
         }
     }
 
-    private static String findStudentsInClassroom(int classroom) {
-        for (Student student: studentList) {
+    private static void findStudentsInClassroom(int classroom) {
+        for (Student student: studentsList) {
             if (student.classroom == classroom) {
-                System.out.println(student.lastName + "," + student.firstName);
+                System.out.print(student.lastName + "," + student.firstName);
             }
         }
     }
@@ -250,7 +259,7 @@ public class SchoolSearch {
 	            for (Student student : studentsList){
 	                if (student.lastName.equals(lastName)){
 	                    System.out.println(student.lastName + "," + student.firstName + "," + student.grade + "," + student.classroom + ","); 
-                        System.out.print(findStudentsInClassroom(classroom));
+                        findStudentsInClassroom(student.classroom);
                     }
                 }
 

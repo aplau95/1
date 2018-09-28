@@ -20,12 +20,4 @@ public class Student {
 		this.bus = bus;
 		this.gpa = gpa;
 	}
-
-	public void printStudent() {
-		System.out.println(lastName + ", " + firstName);
-		System.out.println("Grade: " + grade);
-		System.out.println("Class: " + classroom + " Bus: " + bus + " GPA: " + gpa);
-		System.out.println("Teacher: " + teacherLastName + ", " + teacherFirstName + "\n");
-	}
-
 }
