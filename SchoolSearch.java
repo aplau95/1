@@ -4,10 +4,7 @@
 */
 
 import java.io.File;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.Scanner;
+import java.util.*;
 
 public class SchoolSearch {
 
@@ -63,6 +60,8 @@ public class SchoolSearch {
 
 	}
 
+
+    // Traceability: implements requirements R3
     private static void processCommand(String userInput) {
 	    Scanner tkn = new Scanner(userInput);
 	    if (tkn.hasNext()){
@@ -74,11 +73,13 @@ public class SchoolSearch {
             } else if (cmd.equals("G:") || cmd.equals("Grade:")) {
                 processGrade(tkn);
             } else if (cmd.equals("GT:") || cmd.equals("GradeTeacher:")) {
-                processGradeTeacher(tkn.nextInt());
+                processGradeTeacher(tkn);
             } else if (cmd.equals("B:") || cmd.equals("Bus:")) {
 	            processBus(tkn);
             } else if (cmd.equals("A:") || cmd.equals("Average:")) {
-	            processAverage(tkn);
+                processAverage(tkn);
+            } else if (cmd.equals("Analyze:")) {
+                analyze(tkn);
             } else if (cmd.equals("I") || cmd.equals("Info")) {
                 processInfo();
             } else if (cmd.equals("CT:") || cmd.equals("ClassroomTeacher:")) {
@@ -142,20 +143,25 @@ public class SchoolSearch {
         } else { System.out.println("Invalid Command: A[verage]: <number>"); }
     }
 
-    private static void progressGradeTeacher(int grade){
-        ArrayList<Integer> results = new ArrayList<>();
-        for (Student student : studentsList) {
-	        if (student.grade == grade) {
-                if(!results.contains(student.classroom)){
-                    results.add(student.classroom);
+    private static void processGradeTeacher(Scanner tkn) {
+        if (tkn.hasNext()) {
+            ArrayList<Integer> results = new ArrayList<>();
+            int grade = Integer.parseInt(tkn.next());
+            for (Student student : studentsList) {
+                if (student.grade == grade) {
+                    if(!results.contains(student.classroom)){
+                        results.add(student.classroom);
+                    }
                 }
             }
-        }
-        for (Integer classroom: results) {
-            findTeachersInClassroom(classroom);
-        }
+            for (Integer classroom: results) {
+                findTeachersInClassroom(classroom);
+                System.out.println();
+            }
+        } else { System.out.println("Invalid Command: GT: <number>"); }
     }
 
+    // Traceability: implements requirements R8
     private static void processBus(Scanner tkn) {
 	    if(tkn.hasNext()){
 	        int route = tkn.nextInt();
@@ -167,6 +173,7 @@ public class SchoolSearch {
         } else { System.out.println("Invalid Command: B[us]: <Number>"); }
     }
 
+    // Traceability: implements requirements R7 and R9
     private static void processGrade(Scanner tkn) {
 	    if (tkn.hasNext()){
 	        int grade = tkn.nextInt();
@@ -188,6 +195,8 @@ public class SchoolSearch {
         } else { System.out.println("Invalid Command: G[rade]: <number>"); }
     }
 
+    // Traceability: implements requirements R9
+    // helper function to deal with getting the highest GPA
     private static void findHighest(int grade) {
 	    ArrayList<Student> results = new ArrayList<>();
 	    for (Student student : studentsList) {
@@ -211,6 +220,8 @@ public class SchoolSearch {
         }
     }
 
+    // Traceability: implements requirements R9
+    // helper function to deal with getting the lowest GPA
     private static void findLowest(int grade) {
 	    ArrayList<Student> results = new ArrayList<>();
 	    for (Student student : studentsList) {
@@ -234,6 +245,89 @@ public class SchoolSearch {
         }
     }
 
+    private static void analyze(Scanner tkn){
+        if(tkn.hasNext()){
+            switch(tkn.next()) {
+                case "B":
+                case "Bus":
+                    analyzeBus();
+                case "T":
+                case "Teacher":
+                    analyzeTeacher();  
+                case "G":
+                case "Grade":
+                    analyzeGrade();  
+            }
+        }
+    }
+
+    private static void analyzeBus(){
+        HashMap<Integer, Float> busHashGPA = new HashMap<Integer, Float>();
+        HashMap<Integer, Integer> busHashFreq = new HashMap<Integer, Integer>();
+        TreeSet<Integer> busList = new TreeSet<Integer>();
+        for(Student student: studentsList){
+            if(!busList.contains(student.bus)){
+                busList.add(student.bus);
+                busHashFreq.put(student.bus, 1);
+                busHashGPA.put(student.bus, student.gpa);
+            } else {
+                busHashFreq.put(student.bus, busHashFreq.get(student.bus) + 1);
+                busHashGPA.put(student.bus, busHashGPA.get(student.bus) + student.gpa);    
+            }
+        }
+        for(Integer busNum: busList) {
+            System.out.println("Bus " + busNum + " average gpa: " + busHashGPA.get(busNum) / busHashFreq.get(busNum));
+        }
+    }
+
+    private static void analyzeGrade(){
+        HashMap<Integer, Float> gradeHashGPA = new HashMap<Integer, Float>();
+        HashMap<Integer, Integer> gradeHashFreq = new HashMap<Integer, Integer>();
+        TreeSet<Integer> gradeList = new TreeSet<Integer>();
+        for(Student student: studentsList){
+            if(!gradeList.contains(student.grade)){
+                gradeList.add(student.grade);
+                gradeHashFreq.put(student.grade, 1);
+                gradeHashGPA.put(student.grade, student.gpa);
+            } else {
+                gradeHashFreq.put(student.grade, gradeHashFreq.get(student.grade) + 1);
+                gradeHashGPA.put(student.grade, gradeHashGPA.get(student.grade) + student.gpa);    
+            }
+        }
+        for(Integer grade: gradeList) {
+            System.out.println("Grade " + grade + " average gpa: " + gradeHashGPA.get(grade) / gradeHashFreq.get(grade));
+        }
+    }
+
+    private static void analyzeTeacher(){
+        HashMap<String, Float> teacherHashGPA = new HashMap<String, Float>();
+        HashMap<String, Integer> teacherHashFreq = new HashMap<String, Integer>();
+        TreeSet<String> teacherList = new TreeSet<String>();
+        for(Teacher teacher: teachersList){
+            getStudentsGPA(teacher, teacherHashFreq, teacherHashGPA, teacherList);
+        }
+        for(String teacherLastName: teacherList) {
+            System.out.println(teacherLastName + " average student gpa: " + teacherHashGPA.get(teacherLastName) / teacherHashFreq.get(teacherLastName));
+        }
+    }
+
+    private static void getStudentsGPA(Teacher teacher, HashMap<String, Integer> teacherHashFreq, HashMap<String, Float> teacherHashGPA, TreeSet<String> teacherList){
+        for(Student student: studentsList){
+            if(student.classroom == teacher.classroom){
+                if(!teacherList.contains(teacher.lastName)){
+                    teacherList.add(teacher.lastName);
+                    teacherHashFreq.put(teacher.lastName, 1);
+                    teacherHashGPA.put(teacher.lastName, student.gpa);
+                } else {
+                    teacherHashFreq.put(teacher.lastName, teacherHashFreq.get(teacher.lastName) + 1);
+                    teacherHashGPA.put(teacher.lastName, teacherHashGPA.get(teacher.lastName) + student.gpa);    
+                }
+            }
+        }
+        
+    }
+
+    // Traceability: implements requirements R6
     private static void processTeacher(Scanner tkn) {
 	    if (tkn.hasNext()){
 	        String lastName = tkn.next();
@@ -261,6 +355,7 @@ public class SchoolSearch {
         }
     }
 
+    // Traceability: implements requirements R4 and R5
     private static void processStudent(Scanner tkn) {
 	    if (tkn.hasNext()){
 	        String lastName = tkn.next();
